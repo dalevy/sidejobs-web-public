@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="layout/site-header">
+      <title>SideJobs - Worker Registration</title>
+   </head>
+<body ng-app="registrationApp" ng-controller="registrationCtrl">
+<div th:replace="layout/site-navigation"></div>
+	<div class="container">
+		<br/>
+		<div class="row justify-content-md-center">
+			<div class="col-sm-5 col-md-5">
+				<h3>Create a new account</h3>
+				<br/>
+				<div class="input-group input-group-lg">
+  					<input ng-model="firstname" type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1"/>
+				</div>
+				<br/>
+				<div class="input-group input-group-lg">
+  					<input ng-model="lastname" type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1"/>
+				</div>
+				<br/>
+				<br/>
+				<div class="input-group input-group-lg">
+  					<input ng-model="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1"/>
+				</div>
+				<br/>
+				<div class="input-group input-group-lg">
+  					<input ng-model="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="sizing-addon1"/>
+				</div>
+				<br/>
+				<div class="input-group input-group-lg">
+  					<input ng-model="confirm_password" type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="sizing-addon1"/>
+				</div>
+				<br/>
+				<br/>
+				<div ng-model="category_alert" class="alert alert-secondary" role="alert">
+					<i class="fa fa-info-circle fa-1x " aria-hidden="true"></i> Please note that you will receive a confirmation link by email to confirm your registration.
+				</div>
+				<br/><br/>
+				<div ng-model="loading_bar" ng-hide="hideLoading" class="progress">
+  					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><strong>Please wait...</strong></div>
+				</div>
+				<br/>	
+				<button type="button" class="btn btn-success border-dark" ng-click="submit()"><i class="fa fa-check fa-1x " style="color:white" aria-hidden="true"></i> Submit</button>     <button type="button" class="btn btn-light border-dark"><i class="fa fa-close fa-1x " style="color:black" aria-hidden="true"></i> Clear</button>								
+			</div>
+		</div>
+	</div>
+
+<script src="/js/registration/registration.js"></script>
+</body>
+</html>

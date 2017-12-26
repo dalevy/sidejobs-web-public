@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="layout/site-header">
+      <title>SideJobs - Worker Registration</title>
+   </head>
+<body ng-app="registrationApp" ng-controller="registrationCtrl">
+<div th:replace="layout/site-navigation"></div>
+	<div class="container">
+		<br/><br/>
+		<div class="row justify-content-md-center">
+			<div class="col-sm-8 col-md-8">
+				<div class="card text-center">
+  					 <div class="card-body">
+    					<h4 class="card-title">Unable To Verify Registration</h4>
+    					<p class="card-text">We are unable to verify your account creation request. If you continue to have problems creating a new account please select 'Help" from the menu above.</p>
+    					<a href="/workers/registration" class="btn btn-primary"><i class="fa fa-arrow-left fa-1x " style="color:white" aria-hidden="true"></i> Create Account</a> 			
+  					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

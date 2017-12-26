@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="layout/site-header">
+      <title>SideJobs - Worker Registration</title>
+   </head>
+<body ng-app="verificationApp" ng-controller="verificationCtrl">
+<div th:replace="layout/site-navigation"></div>
+	<div class="container">
+		<br/><br/>
+		<div class="row justify-content-md-center">
+			<div class="col-sm-8 col-md-8">
+				<div class="card text-center">
+  					 <div class="card-body">
+    					<h4 class="card-title">Registration Success!</h4>
+    					<p class="card-text">Thank you for creating a new SideJobs account. You will now be redirected to the Jobs listing section in a few moments.</p>
+    					<div class="progress">
+  							<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{loading}}" aria-valuemin="0" aria-valuemax="{{loading}}" style="width: {{loading}}%"></div>
+						</div>   							
+  					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+
+var app = angular.module('verificationApp', []);
+
+app.controller('verificationCtrl',['$scope',function($scope) {
+
+	$scope.loading = 100;
+	setTimeout("location.href = '/';",5000);
+		  
+}]);
+</script>	
+
+</body>
+</html>

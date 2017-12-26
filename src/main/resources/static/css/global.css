@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400');
+@import url('https://fonts.googleapis.com/css?family=Patrick+Hand+SC');
+
+/**
+* Site Fonts
+**/
+
+h1,h2,h3,h4 {
+     font-family: 'Patrick Hand SC', cursive;
+}
+
+.site-font-large {
+	 font-family: 'Patrick Hand SC', cursive;
+	 font-size: 50px;
+}
+
+.site-font-medium{
+	 font-family: 'Patrick Hand SC', cursive;
+	 font-size: 50px;
+}
+
+.site-font-small {
+	 font-family: 'Patrick Hand SC', cursive;
+	 font-size: 20px;
+}
