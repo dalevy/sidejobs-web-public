@@ -2,6 +2,7 @@
 
 var API_LIST_CATEGORIES = "/jobs/list/categories";
 var API_REGISTER_WORKER = "/user/registration/worker";
+var API_LOGIN_USER = "/user/login";
 
 
 var getUrlParameter = function getUrlParameter(sParam) {

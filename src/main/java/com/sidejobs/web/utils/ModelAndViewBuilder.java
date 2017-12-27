@@ -67,6 +67,9 @@ public class ModelAndViewBuilder {
 						mav.addObject("username",claims.getClaim("user"));
 						mav.addObject("id",claims.getClaim("id"));
 						
+						System.out.println("username: "+claims.getSubject());
+						System.out.println("id: " +claims.getClaim("id"));
+						
 						//.claim("id",reg.getUserId())
 						//.claim("user", userName)
 						//.claim("role", "student")

@@ -36,14 +36,16 @@ public class SiteController {
 		 return model;
 	}
 	
-	@RequestMapping(value ="/errors/test")
-	public ModelAndView test() {
+	@RequestMapping(value ="/login", method=RequestMethod.GET)
+	public ModelAndView verificationError(HttpServletResponse response,
+			@CookieValue(value="token", defaultValue="none",required=false) String token) {
 		
-		ModelAndViewBuilder builder = new ModelAndViewBuilder("registration/success");
+		ModelAndViewBuilder builder = new ModelAndViewBuilder("login");
 		ModelAndView model = builder.buildModelAndView();
 	
 		return model;
 	}
+	
 	
 	@RequestMapping(value ="/errors/verification")
 	public ModelAndView verificationError() {

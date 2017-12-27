@@ -1,6 +1,7 @@
 package com.sidejobs.web.controllers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +35,17 @@ import com.nimbusds.jose.crypto.DirectEncrypter;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.sidejobs.api.common.LoginResponse;
 import com.sidejobs.api.common.RegistrationResponse;
 import com.sidejobs.api.common.ResponseStatus;
 import com.sidejobs.api.common.ResponseWrapper;
+import com.sidejobs.api.entities.User;
+import com.sidejobs.web.common.WebLoginResponse;
+import com.sidejobs.web.common.WebResponse;
+import com.sidejobs.web.common.WebResponseCode;
 import com.sidejobs.web.utils.Deserializer;
 import com.sidejobs.web.utils.ModelAndViewBuilder;
+import com.sidejobs.web.utils.ParameterStringBuilder;
 import com.sidejobs.web.utils.RestClient;
 import com.sidejobs.web.utils.TimeFrame;
 
@@ -63,6 +70,139 @@ public class APIController {
 			e.printStackTrace();
 		}
 				return data;
+	}
+	
+	@RequestMapping(value= "/user/login", method=RequestMethod.POST)
+	@ResponseBody
+	public WebResponse<WebLoginResponse> userLogin(
+			HttpServletResponse response,
+			@RequestParam(value="email", required=true, defaultValue="None")String email,
+			@RequestParam(value="password", required=true, defaultValue="None")String password
+			) throws IOException, JOSEException{
+		
+		String endpoint = env.getProperty("api.users.login");
+		
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("email", email);
+		params.put("password", password);
+		
+		System.out.println("user email: "+email+" user password: "+password);
+		
+		//get user from email and password
+		String url = endpoint+"?"+ParameterStringBuilder.getParamsString(params);
+		String data = new RestClient().post(url);
+		
+		System.out.println(data);
+		
+		Deserializer<ResponseWrapper<LoginResponse>> des = 
+				new Deserializer<ResponseWrapper<LoginResponse>>
+					(new TypeToken<ResponseWrapper<LoginResponse>>() {}.getType());
+		
+		ResponseWrapper<LoginResponse> res = des.deserialize(data);
+		
+		WebResponse<WebLoginResponse> webresponse = new WebResponse<WebLoginResponse>();
+		
+		//wrong email and/or password
+		if(res.getStatus() == ResponseStatus.Failure)
+		{
+			WebLoginResponse wlr = new WebLoginResponse();
+			wlr.setMessage("The email or password you have entered is incorrect, please try again");
+			wlr.setSummary("Unable To Verify Login Info");
+			wlr.setCode(WebResponseCode.Failure);
+			webresponse.setData(wlr);
+			return webresponse;
+		}
+
+				
+		User user = res.getData().getUser();
+		
+		
+		switch(user.getStatus())
+		{
+			//email account not verified
+			case "Unverified":
+				WebLoginResponse unverified = new WebLoginResponse();
+				unverified.setCode(WebResponseCode.Failure);
+				unverified.setSummary(env.getProperty("sidejobs.web.messages.account.unverified"));
+				unverified.setMessage("Account Unverified ");
+				webresponse.setData(unverified);
+				return webresponse;	
+			case "Locked":
+				WebLoginResponse locked = new WebLoginResponse();
+				locked.setCode(WebResponseCode.Failure);
+				locked.setSummary(env.getProperty("sidejobs.web.messages.account.locked"));
+				locked.setMessage("Login Failure");
+				webresponse.setData(locked);
+				return webresponse;
+			case "Suspended":
+				WebLoginResponse suspended = new WebLoginResponse();
+				suspended.setCode(WebResponseCode.Failure);
+				suspended.setSummary(env.getProperty("sidejobs.web.messages.account.suspended"));
+				suspended.setMessage("Login Failure");
+				webresponse.setData(suspended);
+				return webresponse;
+		}
+		
+		if(res.getStatus() == ResponseStatus.Failure)
+		{
+			WebLoginResponse noAccount = new WebLoginResponse();
+			noAccount.setCode(WebResponseCode.Failure);
+			noAccount.setSummary(env.getProperty("sidejobs.web.messages.login.failure"));
+			noAccount.setMessage("Login Failure");
+			webresponse.setData(noAccount);
+			return webresponse;
+		}
+		
+		WebLoginResponse noAccount = new WebLoginResponse();
+		noAccount.setCode(WebResponseCode.Success);
+		noAccount.setSummary(env.getProperty("sidejobs.web.messages.login.failure"));
+		noAccount.setMessage("Login Success");
+		webresponse.setData(noAccount);
+		
+		// decode the base64 encoded string
+		byte[] decodedKey = env.getProperty("app.jwt.key").getBytes();
+		// rebuild key using SecretKeySpec
+		SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
+					
+		JWSSigner signer = new MACSigner(originalKey);
+		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+				.subject(user.getId())
+				.issueTime(new Date())
+				.issuer(env.getProperty("app.root"))
+				.claim("id",user.getId())
+				.claim("role", user.getRole())
+				.claim("fname", user.getFirst_name())
+				.claim("lname",user.getLast_name())
+				.claim("allowed", "true")
+				.claim("status", "active")
+				.build();
+		
+		SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+		signedJWT.sign(signer);
+		
+	
+		// Create JWE object with signed JWT as payload
+		JWEObject jweObject = new JWEObject(
+		    new JWEHeader.Builder(JWEAlgorithm.DIR, EncryptionMethod.A256CBC_HS512)
+		        .contentType("JWT") // required to signal nested JWT
+		        .build(),
+		    new Payload(signedJWT));
+		
+		jweObject.encrypt(new DirectEncrypter(originalKey.getEncoded()));
+		
+		
+		// Serialise to JWE compact form
+		String jweString = jweObject.serialize();
+			
+		//add jwt token
+		Cookie ctoken = new Cookie("token",jweString);
+		ctoken.setMaxAge(TimeFrame.getSecondsPerDay(1));
+		ctoken.setPath(env.getProperty("app.jwt.cookie.path"));
+		ctoken.setHttpOnly(true);
+		
+		response.addCookie(ctoken);
+		
+		return webresponse;
 	}
 	
 	@RequestMapping(value = "/user/verification", method=RequestMethod.GET)
