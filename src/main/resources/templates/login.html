@@ -12,7 +12,7 @@
 				<h3>Login</h3>
 				<br/>
 				<div class="input-group input-group-lg">
-  					<input ng-model="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1"/>
+  					<input ng-model="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
 				</div>
 				<br/>
 				<div class="input-group input-group-lg">
@@ -25,6 +25,9 @@
 				<br/><br/>
 				<div ng-model="category_alert" ng-hide="hideError" class="alert alert-danger" role="alert">
 					<i class="fa fa-info-circle fa-1x " aria-hidden="true"></i> {{error_message}}
+				</div>
+				<div ng-model="loading_bar" ng-hide="hideLoading" class="progress">
+  					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><strong>Please wait...</strong></div>
 				</div>								
 			</div>
 		</div>

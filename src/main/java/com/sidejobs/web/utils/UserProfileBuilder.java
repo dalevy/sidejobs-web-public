@@ -23,17 +23,13 @@ public class UserProfileBuilder {
 	
 	public SignedJWT getSignedJWT(String token) throws KeyLengthException, JOSEException, ParseException
 	{
-		System.out.println("Got token ==>"+token);
 		SignedJWT signedJWT= null;
 		
 		if(token == null || token.equalsIgnoreCase("none") || token.equalsIgnoreCase("") || token.isEmpty()) {
-			System.out.println("UserProfileBuilder: No token detected");
 			return signedJWT;
 			
 		}
-		
-		System.out.println("Found token: "+token);
-		
+				
 		JWEObject jweObject = JWEObject.parse(token);
 		
 		// decode the base64 encoded string
@@ -44,21 +40,12 @@ public class UserProfileBuilder {
 		
 		jweObject.decrypt(new DirectDecrypter(originalKey.getEncoded()));
 		
-		System.out.println("Exctracting payload..");
 		// Extract payload
 		signedJWT = jweObject.getPayload().toSignedJWT();
 		
 		if(!signedJWT.verify(new MACVerifier(originalKey.getEncoded()))){
 			System.out.println("Unable to verify jwt!!");
-		}else {
-			System.out.println("JWT verified");
 		}
-		
-		//System.out.println("sub : "+signedJWT.getJWTClaimsSet().getSubject());
-		//System.out.println("id : "+signedJWT.getJWTClaimsSet().getClaim("id"));
-		//System.out.println("role : "+signedJWT.getJWTClaimsSet().getClaim("role"));
-		//System.out.println("time : "+signedJWT.getJWTClaimsSet().getExpirationTime());
-		
 		return signedJWT;
 	}
 }

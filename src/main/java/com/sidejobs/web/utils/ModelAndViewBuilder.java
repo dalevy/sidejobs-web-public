@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,6 +14,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
 public class ModelAndViewBuilder {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	ModelAndView mav;
 	Map<String,String> cookies;
@@ -32,7 +36,9 @@ public class ModelAndViewBuilder {
 	public ModelAndView buildModelAndView()
 	{
 		//standard template objects
+		 logger.debug("User not authenticated, generating default ModelAndView object");
 		 mav.addObject("username", "Login");
+		 mav.addObject("authenticated",false); //so thymeleaf knows if this user is logged in
 		 mav.addObject("messages", "0");
 		 
 		if(cookies == null || cookies.isEmpty())
@@ -62,13 +68,15 @@ public class ModelAndViewBuilder {
 						if(jwt == null)
 							return;
 						
+						logger.debug("Found JWT token with value: "+val);
 						JWTClaimsSet claims = jwt.getJWTClaimsSet();
 
-						mav.addObject("username",claims.getClaim("user"));
 						mav.addObject("id",claims.getClaim("id"));
+						mav.addObject("authenticated",true);
+						mav.addObject("role",claims.getClaim("role"));
+						mav.addObject("username",claims.getClaim("firstname")+" "+((String)claims.getClaim("lastname")).substring(0, 1)+".");
 						
-						System.out.println("username: "+claims.getSubject());
-						System.out.println("id: " +claims.getClaim("id"));
+						logger.debug("Adding mav objects - id: "+claims.getClaim("id")+" authenticated: "+true);
 						
 						//.claim("id",reg.getUserId())
 						//.claim("user", userName)

@@ -2,11 +2,13 @@
 <a class="navbar-brand" href="/">
     <h2>SideJobs</h2>
   </a>
-<form class="form-inline">
+<form class="form-inline" th:switch="${authenticated}">
 	<i class="fa fa-user fa-2x " style="color:white;" aria-hidden="true"></i>
-    <a class="nav-link" href="#" th:text="${username}"></a>
-    <button class="btn btn-outline-light mr-sm-3" type="button"> <i class="fa fa-comments-o fa-1x " style="color:white" aria-hidden="true"></i> Messages <span class="badge badge-light">4</span></button>
-    <button class="btn btn-outline-light mr-sm-3" type="button" aria-lable="Forms"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Post A Job</button>
-    <button class="btn btn-outline-light mr-sm-3" type="button" aria-lable="Forms"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Help</button>
+    <a class="nav-link" href="/users/dashboard" th:text="${username}" th:case="true"></a>
+    <a class="nav-link" href="/login" th:text="${username}" th:case="false"></a>
+    <a href="/home" class="btn btn-outline-light mr-sm-3" role="button">Home</a>
+    <a class="btn btn-outline-light mr-sm-3" role="button"> <i class="fa fa-comments-o fa-1x " style="color:white" aria-hidden="true"></i> Messages <span class="badge badge-light" th:text="${messages}"></span></a>
+    <a href="/jobs/post" class="btn btn-outline-light mr-sm-3" role="Post A Job" aria-lable="Forms"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Post A Job</a>
+    <a href="#" class="btn btn-outline-light mr-sm-3" role="button" aria-lable="Help"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Help</a>
   </form>
 </nav>

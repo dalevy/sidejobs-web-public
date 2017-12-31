@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head th:replace="layout/site-header">
+      <title>SideJobs - Worker Registration</title>
+   </head>
+<body ng-app="jobPostApp" ng-controller="jobPostCtrl">
+<div th:replace="layout/site-navigation"></div>
+	<div class="container">
+		<br/><br/>
+		<div class="row justify-content-md-center">
+			<div class="col-sm-5 col-md-5">
+				<h1>Post a new job listing</h1>
+				<br/><br/>
+				<h3 class="site-font-small">Choose a category</h3>
+				<select ng-model="select_category" ng-change="categoryChange()" ng-options="category.name for category in categories" class="custom-select">
+				</select>
+				<br/><br/>
+				<h3 ng-hide="!isSelectedCategory" class="site-font-small">Choose an area</h3>
+				<select ng-model="select_area" ng-change="areaChange()" ng-hide="!isSelectedCategory" ng-options="area.name for area in areas" class="custom-select">
+				</select>
+				<br/><br/>
+				<h3 ng-hide="!isSelectedArea" class="site-font-small">Select your specialties</h3>
+				<div class="list-group">
+  					<a ng-hide="!isSelectedArea" ng-repeat="specialty in specialties" href="javascript:void(0)" ng-class="areaIsGreen[$index]" ng-click="specialtySelected($index,specialty.id)" class="list-group-item list-group-item-action">{{specialty.name}}</a>
+				</div>
+				<br/>
+				<button ng-hide="!isSelectedSpecialty" ng-click="next()" type="button" class="btn btn-primary btn-lg">Continue <i class="fa fa-arrow-right  fa-1x " style="color:white" aria-hidden="true"></i></button>
+			</div>
+		</div>
+	</div>
+<script src="/js/jobs/post/new-job-post-form-1.js"></script>
+</body>
+</html>

@@ -11,6 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -44,21 +46,92 @@ import com.sidejobs.web.common.WebLoginResponse;
 import com.sidejobs.web.common.WebResponse;
 import com.sidejobs.web.common.WebResponseCode;
 import com.sidejobs.web.utils.Deserializer;
+import com.sidejobs.web.utils.JwtTokenBuilder;
 import com.sidejobs.web.utils.ModelAndViewBuilder;
 import com.sidejobs.web.utils.ParameterStringBuilder;
 import com.sidejobs.web.utils.RestClient;
 import com.sidejobs.web.utils.TimeFrame;
 
+/***
+ * This class is used to map sidejobs web urls to sidejobs api urls. As such, a client -> server relationship is established
+ * between the web and api applications
+ * 
+ * @author Developer
+ *
+ */
 @Controller
 public class APIController {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private Environment env;
 	
+	@RequestMapping(value = "/jobs/list/specialties/area/category", method=RequestMethod.GET)
+	@ResponseBody
+	public String getSpecialtiesByAreaAndCategory(
+			@RequestParam("area") String area,
+			@RequestParam("category") String category
+			) throws UnsupportedEncodingException {
+		System.out.println("specialties-area-category request");
+		String data = "";
+		String endpoint = env.getProperty("api.jobs.list.specialties.areas.categories");
+		Map<String,String> params = new HashMap<>();
+		params.put("area", area);
+		params.put("category", category);
+		
+		endpoint+="?"+ParameterStringBuilder.getParamsString(params);
+		try{
+			String url = endpoint;
+			RestClient client = new RestClient();
+			data = client.get(url);
+		}catch(IOException e) {
+			logger.debug("API retrieval of categories list has failed");
+			e.printStackTrace();
+		}
+				return data;
+	}
+	
+	@RequestMapping(value = "/jobs/list/specialties/area", method=RequestMethod.GET)
+	@ResponseBody
+	public String getSpecialtiesByAreaId(@RequestParam("id") String id) {
+		
+		String data = "";
+		String endpoint = env.getProperty("api.jobs.list.specialties.areas");
+		endpoint = endpoint.replace("{id}", id);
+		try{
+			String url = endpoint;
+			RestClient client = new RestClient();
+			data = client.get(url);
+		}catch(IOException e) {
+			logger.debug("API retrieval of categories list has failed");
+			e.printStackTrace();
+		}
+				return data;
+	}
+	
+	@RequestMapping(value = "/jobs/list/areas/category", method=RequestMethod.GET)
+	@ResponseBody
+	public String getAreasByCategoryId(@RequestParam("id") String id) {
+		
+		String data = "";
+		String endpoint = env.getProperty("api.jobs.list.areas.categories");
+		endpoint = endpoint.replace("{id}", id);
+		try{
+			String url = endpoint;
+			RestClient client = new RestClient();
+			data = client.get(url);
+		}catch(IOException e) {
+			logger.debug("API retrieval of categories list has failed");
+			e.printStackTrace();
+		}
+				return data;
+	}
+	
 	@RequestMapping(value = "/jobs/list/categories", method=RequestMethod.GET)
 	@ResponseBody
 	public String getCategories() {
-		
+				
 		String data = "";
 		String endpoint = env.getProperty("api.jobs.list.categories"); 
 		try{
@@ -66,7 +139,7 @@ public class APIController {
 			RestClient client = new RestClient();
 			data = client.get(url);
 		}catch(IOException e) {
-			System.out.println("There was an error");
+			logger.debug("API retrieval of categories list has failed");
 			e.printStackTrace();
 		}
 				return data;
@@ -86,14 +159,12 @@ public class APIController {
 		params.put("email", email);
 		params.put("password", password);
 		
-		System.out.println("user email: "+email+" user password: "+password);
+		logger.debug("Recieved user login with credentials - user email: "+email+" user password: "+password);
 		
 		//get user from email and password
 		String url = endpoint+"?"+ParameterStringBuilder.getParamsString(params);
 		String data = new RestClient().post(url);
-		
-		System.out.println(data);
-		
+				
 		Deserializer<ResponseWrapper<LoginResponse>> des = 
 				new Deserializer<ResponseWrapper<LoginResponse>>
 					(new TypeToken<ResponseWrapper<LoginResponse>>() {}.getType());
@@ -110,6 +181,7 @@ public class APIController {
 			wlr.setSummary("Unable To Verify Login Info");
 			wlr.setCode(WebResponseCode.Failure);
 			webresponse.setData(wlr);
+			logger.debug("User login failure - incorrect password or email address");
 			return webresponse;
 		}
 
@@ -159,40 +231,9 @@ public class APIController {
 		noAccount.setMessage("Login Success");
 		webresponse.setData(noAccount);
 		
-		// decode the base64 encoded string
-		byte[] decodedKey = env.getProperty("app.jwt.key").getBytes();
-		// rebuild key using SecretKeySpec
-		SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
-					
-		JWSSigner signer = new MACSigner(originalKey);
-		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-				.subject(user.getId())
-				.issueTime(new Date())
-				.issuer(env.getProperty("app.root"))
-				.claim("id",user.getId())
-				.claim("role", user.getRole())
-				.claim("fname", user.getFirst_name())
-				.claim("lname",user.getLast_name())
-				.claim("allowed", "true")
-				.claim("status", "active")
-				.build();
+		JwtTokenBuilder builder = new JwtTokenBuilder(env.getProperty("app.jwt.key"),env.getProperty("app.jwt.key"),user);
 		
-		SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-		signedJWT.sign(signer);
-		
-	
-		// Create JWE object with signed JWT as payload
-		JWEObject jweObject = new JWEObject(
-		    new JWEHeader.Builder(JWEAlgorithm.DIR, EncryptionMethod.A256CBC_HS512)
-		        .contentType("JWT") // required to signal nested JWT
-		        .build(),
-		    new Payload(signedJWT));
-		
-		jweObject.encrypt(new DirectEncrypter(originalKey.getEncoded()));
-		
-		
-		// Serialise to JWE compact form
-		String jweString = jweObject.serialize();
+		String jweString = builder.getJwt();
 			
 		//add jwt token
 		Cookie ctoken = new Cookie("token",jweString);

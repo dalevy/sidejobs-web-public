@@ -31,10 +31,13 @@ app.controller('loginCtrl',['$scope','$http','UserService', function($scope,$htt
 	$scope.password = "";
 	$scope.error_message = "adsfadfadf";
 	$scope.hideError = true;
+	$scope.hideLoading = true;
 	
 	$scope.submit = function(){
+		$scope.hideLoading = false;
 		UserService.loginUser($scope.email,$scope.password)
 			.then(function(response){
+				$scope.hideLoading = true;
 			 var status = response.data;
 			 console.log(response);
 			 if(status.code === "Failure")
