@@ -25,3 +25,27 @@ h1,h2,h3,h4 {
 	 font-size: 20px;
 	 padding-bottom: 0px;
 }
+
+/*
+* Image uplaod
+*/
+
+.image-upload {
+	height: 170px;
+}
+.image-upload > input
+{
+    display: none;
+}
+.image-upload i,img
+{
+	postion:absolute;
+	top: 50% !important;
+	left: 50% !important;
+	width:150px;
+    cursor: pointer;
+}
+
+.site-collapsable{
+	display: none;
+}

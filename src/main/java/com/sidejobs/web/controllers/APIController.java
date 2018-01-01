@@ -41,6 +41,7 @@ import com.sidejobs.api.common.LoginResponse;
 import com.sidejobs.api.common.RegistrationResponse;
 import com.sidejobs.api.common.ResponseStatus;
 import com.sidejobs.api.common.ResponseWrapper;
+import com.sidejobs.api.common.VerificationResponse;
 import com.sidejobs.api.entities.User;
 import com.sidejobs.web.common.WebLoginResponse;
 import com.sidejobs.web.common.WebResponse;
@@ -246,6 +247,15 @@ public class APIController {
 		return webresponse;
 	}
 	
+	/***
+	 * Verifies a new user registration given an email registration verification token
+	 * @param token
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 * @throws KeyLengthException
+	 * @throws JOSEException
+	 */
 	@RequestMapping(value = "/user/verification", method=RequestMethod.GET)
 	public ModelAndView  verifyRegistrationToken(
 			@RequestParam(value="token", required=true, defaultValue="None")String token,
@@ -259,11 +269,11 @@ public class APIController {
 		
 		System.out.println(data);
 		
-		Deserializer<ResponseWrapper<RegistrationResponse>> des = 
-				new Deserializer<ResponseWrapper<RegistrationResponse>>
-					(new TypeToken<ResponseWrapper<RegistrationResponse>>() {}.getType());
+		Deserializer<ResponseWrapper<VerificationResponse>> des = 
+				new Deserializer<ResponseWrapper<VerificationResponse>>
+					(new TypeToken<ResponseWrapper<VerificationResponse>>() {}.getType());
 		
-		ResponseWrapper<RegistrationResponse> res = des.deserialize(data);
+		ResponseWrapper<VerificationResponse> res = des.deserialize(data);
 		
 		if(res.getStatus() == ResponseStatus.Failure)
 		{
@@ -273,40 +283,11 @@ public class APIController {
 		}
 		
 		
-		RegistrationResponse reg = res.getData();
+		VerificationResponse reg = res.getData();
 		
-		// decode the base64 encoded string
-		byte[] decodedKey = env.getProperty("app.jwt.key").getBytes();
-		// rebuild key using SecretKeySpec
-		SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
-					
-		JWSSigner signer = new MACSigner(originalKey);
-		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-				.subject(user)
-				.issueTime(new Date())
-				.issuer(env.getProperty("app.root"))
-				.claim("id",reg.getUserId())
-				.claim("role", "worker")
-				.claim("allowed", "true")
-				.claim("status", "active")
-				.build();
+		JwtTokenBuilder builder = new JwtTokenBuilder(env.getProperty("app.jwt.key"),env.getProperty("app.jwt.key"),reg.getUser());
 		
-		SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-		signedJWT.sign(signer);
-		
-	
-		// Create JWE object with signed JWT as payload
-		JWEObject jweObject = new JWEObject(
-		    new JWEHeader.Builder(JWEAlgorithm.DIR, EncryptionMethod.A256CBC_HS512)
-		        .contentType("JWT") // required to signal nested JWT
-		        .build(),
-		    new Payload(signedJWT));
-		
-		jweObject.encrypt(new DirectEncrypter(originalKey.getEncoded()));
-		
-		
-		// Serialise to JWE compact form
-		String jweString = jweObject.serialize();
+		String jweString = builder.getJwt();
 			
 		//add jwt token
 		Cookie ctoken = new Cookie("token",jweString);
@@ -314,12 +295,12 @@ public class APIController {
 		ctoken.setPath(env.getProperty("app.jwt.cookie.path"));
 		ctoken.setHttpOnly(true);
 		
-		System.out.println(ctoken);
+		logger.debug("New user registration verification token: "+jweString);
 		
 		Map<String,String> cookies = new HashMap<String,String>();
 		cookies.put("token", jweString);
-		ModelAndViewBuilder builder = new ModelAndViewBuilder("registration/success",env,cookies);
-		ModelAndView model = builder.buildModelAndView();
+		ModelAndViewBuilder mavBuilder = new ModelAndViewBuilder("registration/success",env,cookies);
+		ModelAndView model = mavBuilder.buildModelAndView();
 		
 		return model;
 	}
@@ -369,4 +350,5 @@ public class APIController {
 		return data;
 	
 	}
+	
 }

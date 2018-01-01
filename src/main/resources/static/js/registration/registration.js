@@ -75,6 +75,14 @@ app.controller('registrationCtrl',['$scope','$http','JobsService', function($sco
 		});
 	}
 	
+	$scope.clear = function(){
+		$scope.email = "";
+		$scope.firstname = "";
+		$scope.lastname = "";
+		$scope.password = "";
+		$scope.confirm_password ="";
+	}
+	
 	
 		  
 }]);

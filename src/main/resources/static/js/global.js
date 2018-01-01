@@ -7,6 +7,9 @@ var API_LIST_SPECIALTIES_BY_AREA = "/jobs/list/specialties/area";
 var API_LIST_SPECIALTIES_BY_AREA_CATEGORY = "/jobs/list/specialties/area/category";
 var API_LOGIN_USER = "/user/login";
 
+//name length between 4 and 25 characters no numbers or symbols
+var REGEX_NAME_RULES = "^[a-zA-Z]{4,25}$";
+
 var buildUrlParameters = function buildUrlParameters(params){
 	
 	 var urlParams = "";
@@ -34,6 +37,17 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+function encodeImageFileAsURL(element, callback, elementId) {
+	  var file = element.files[0];
+	  var reader = new FileReader();
+	  var base64 = "";
+	  reader.onloadend = function() {
+	      //console.log('RESULT', reader.result)
+		  callback(reader.result,elementId);
+	  }
+	  reader.readAsDataURL(file);
+}
 
 
 //From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys

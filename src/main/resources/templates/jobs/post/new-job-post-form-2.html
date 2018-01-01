@@ -10,24 +10,133 @@
 		<div class="row justify-content-md-center">
 			<div class="col-sm-8 col-md-8">
 				<h1>Post a new job listing</h1>
+				<i class="fa fa-asterisk" style="color:red" aria-hidden="true"> - Required fields are marked with this symbol</i> 
 				<form>
 					<br/><br/>
 					<div class="form-group">
-						<label class="site-font-small" for="exampleFormControlTextarea1">Job Headline</label>
-  						<input ng-model="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
+						<label class="site-font-small" for="exampleFormControlTextarea1">Add a Job headline<i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i></label>
+  						<input ng-model="email" type="email" class="form-control" placeholder="Web Developer specializing in Bootstrap based site designs" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
 					</div>
 					<br/>
 					<div class="form-group">
-    					<label class="site-font-small" for="exampleFormControlTextarea1">Description</label>
+    					<label class="site-font-small" for="exampleFormControlTextarea1">Write a good Job description<i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i></label>
     					<textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
   					</div>
   					<br/>
   					 <div class="form-group">
-    					<label for="exampleFormControlFile1">Example file input</label>
-    					<input type="file" class="form-control-file" id="exampleFormControlFile1"/>
+    					<label class="site-font-small">Add Images ({{imagesCount}}/{{imagesMax}})</label>
+    					<div class="row justify-content-around">
+    					   <div class="image-upload  col-3">
+   						 		<label for="file-input-1">
+     					   			<img ng-src="{{images[0]}}" id="photo-id" class="img-thumbnail"/>    					   
+    							</label>
+    							<input type="file" onchange="angular.element(this).scope().uploadFile(this,0)" class="form-control-file" id="file-input-1"/>
+							</div>
+							  <div class="image-upload col-3">
+   						 		<label for="file-input-2">
+        							<img ng-src="{{images[1]}}" id="photo-id" class="img-thumbnail"/>    					   
+    							</label>
+    							<input type="file" onchange="angular.element(this).scope().uploadFile(this,1)" class="form-control-file" id="file-input-2"/>
+							</div>
+							  <div class="image-upload col-3">
+   						 		<label for="file-input-3">
+        							<img ng-src="{{images[2]}}" id="photo-id" class="img-thumbnail"/>    					   
+    							</label>
+    							<input type="file" onchange="angular.element(this).scope().uploadFile(this,2)" class="form-control-file" id="file-input-3"/>
+							</div>
+							<div class="image-upload col-3">
+   						 		<label for="file-input-4">
+        							<img ng-src="{{images[3]}}" id="photo-id" class="img-thumbnail"/>    					   
+    							</label>
+    							<input type="file" onchange="angular.element(this).scope().uploadFile(this,3)" class="form-control-file" id="file-input-4"/>
+							</div>					
+    					</div>
+    					<br/><br/>
+    					<h3 class="site-font-small">Choose your availability</h3>   					
+						<table class="table">
+							<thead>
+								<tr>
+									<th><i class="fa fa-calendar-o fa-1x " style="color:black" aria-hidden="true"></i> Day</th>
+									<th colspan="3"><i class="fa fa-clock-o fa-1x " style="color:red" aria-hidden="true"></i> Begin</th>
+									<th colspan="3"><i class="fa fa-clock-o fa-1x " style="color:green" aria-hidden="true"></i> End</th>
+								</tr>
+							</thead>
+							<tr>
+								<td>Monday</td>
+								<td>
+									<div class="input-group input-group-sm">
+  										<select class="custom-select" id="inputGroupSelect01">
+    										<option value="AM-01">01</option>
+    										<option value="AM-02">02</option>
+    										<option value="AM-03">03</option>
+    										<option value="AM-04">04</option>
+    										<option value="AM-05">05</option>
+    										<option value="AM-06">06</option>
+    										<option value="AM-07">07</option>
+    										<option value="AM-08">08</option>
+    										<option value="AM-09">09</option>
+    										<option value="AM-10">10</option>
+    										<option value="AM-11">11</option>
+    										<option value="AM-12">12</option>    			
+  										</select>
+									</div>
+								</td>
+								<td>
+									<div class="input-group">
+  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
+    										<option value="AM-01">00</option>
+    										<option value="AM-01">30</option>			
+  										</select>
+									</div>
+								</td>
+								<td>
+									<div class="input-group">
+  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
+    										<option value="AM-01">AM</option>
+    										<option value="AM-01">PM</option>			
+  										</select>
+									</div>
+								</td>
+									<td>
+									<div class="input-group">
+  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
+    										<option value="AM-01">01</option>
+    										<option value="AM-02">02</option>
+    										<option value="AM-03">03</option>
+    										<option value="AM-04">04</option>
+    										<option value="AM-05">05</option>
+    										<option value="AM-06">06</option>
+    										<option value="AM-07">07</option>
+    										<option value="AM-08">08</option>
+    										<option value="AM-09">09</option>
+    										<option value="AM-10">10</option>
+    										<option value="AM-11">11</option>
+    										<option value="AM-12">12</option>    			
+  										</select>
+									</div>
+								</td>
+								<td>
+									<div class="input-group">
+  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
+    										<option value="AM-01">00</option>
+    										<option value="AM-01">30</option>			
+  										</select>
+									</div>
+								</td>
+								<td>
+									<div class="input-group">
+  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
+    										<option value="AM-01">AM</option>
+    										<option value="AM-01">PM</option>			
+  										</select>
+									</div>
+								</td>
+							</tr>
+						</table>
   					</div>
   					<br/>
-  					<button type="button" class="btn btn-primary btn-lg">Continue <i class="fa fa-arrow-right  fa-1x " style="color:white" aria-hidden="true"></i></button>					
+  					<button type="button" class="btn btn-primary btn-lg">Continue <i class="fa fa-arrow-right  fa-1x " style="color:white" aria-hidden="true"></i></button>
+  					<br/>
 				</form>
 			</div>
 		</div>
