@@ -14,12 +14,12 @@
 				<form>
 					<br/><br/>
 					<div class="form-group">
-						<label class="site-font-small" for="exampleFormControlTextarea1">Add a Job headline<i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i></label>
+						<label class="site-font-small" for="exampleFormControlTextarea1">Add a Job headline</label><i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i>
   						<input ng-model="email" type="email" class="form-control" placeholder="Web Developer specializing in Bootstrap based site designs" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
 					</div>
 					<br/>
 					<div class="form-group">
-    					<label class="site-font-small" for="exampleFormControlTextarea1">Write a good Job description<i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i></label>
+    					<label class="site-font-small" for="exampleFormControlTextarea1">Write a good Job description </label><i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i>
     					<textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
   					</div>
   					<br/>
@@ -52,91 +52,63 @@
 							</div>					
     					</div>
     					<br/><br/>
-    					<h3 class="site-font-small">Choose your availability</h3>   					
-						<table class="table">
-							<thead>
-								<tr>
-									<th><i class="fa fa-calendar-o fa-1x " style="color:black" aria-hidden="true"></i> Day</th>
-									<th colspan="3"><i class="fa fa-clock-o fa-1x " style="color:red" aria-hidden="true"></i> Begin</th>
-									<th colspan="3"><i class="fa fa-clock-o fa-1x " style="color:green" aria-hidden="true"></i> End</th>
-								</tr>
-							</thead>
-							<tr>
-								<td>Monday</td>
-								<td>
-									<div class="input-group input-group-sm">
-  										<select class="custom-select" id="inputGroupSelect01">
-    										<option value="AM-01">01</option>
-    										<option value="AM-02">02</option>
-    										<option value="AM-03">03</option>
-    										<option value="AM-04">04</option>
-    										<option value="AM-05">05</option>
-    										<option value="AM-06">06</option>
-    										<option value="AM-07">07</option>
-    										<option value="AM-08">08</option>
-    										<option value="AM-09">09</option>
-    										<option value="AM-10">10</option>
-    										<option value="AM-11">11</option>
-    										<option value="AM-12">12</option>    			
-  										</select>
-									</div>
-								</td>
-								<td>
-									<div class="input-group">
-  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
-    										<option value="AM-01">00</option>
-    										<option value="AM-01">30</option>			
-  										</select>
-									</div>
-								</td>
-								<td>
-									<div class="input-group">
-  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
-    										<option value="AM-01">AM</option>
-    										<option value="AM-01">PM</option>			
-  										</select>
-									</div>
-								</td>
-									<td>
-									<div class="input-group">
-  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
-    										<option value="AM-01">01</option>
-    										<option value="AM-02">02</option>
-    										<option value="AM-03">03</option>
-    										<option value="AM-04">04</option>
-    										<option value="AM-05">05</option>
-    										<option value="AM-06">06</option>
-    										<option value="AM-07">07</option>
-    										<option value="AM-08">08</option>
-    										<option value="AM-09">09</option>
-    										<option value="AM-10">10</option>
-    										<option value="AM-11">11</option>
-    										<option value="AM-12">12</option>    			
-  										</select>
-									</div>
-								</td>
-								<td>
-									<div class="input-group">
-  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
-    										<option value="AM-01">00</option>
-    										<option value="AM-01">30</option>			
-  										</select>
-									</div>
-								</td>
-								<td>
-									<div class="input-group">
-  										<select class="custom-select input-group-sm" id="inputGroupSelect01">
-    										<option value="AM-01">AM</option>
-    										<option value="AM-01">PM</option>			
-  										</select>
-									</div>
-								</td>
-							</tr>
-						</table>
+    					<div class="card text-center">
+    					 <div class="card-header">
+    							<h3 class="site-font-small">Choose your availability</h3>
+  							</div>
+  							<div class="card-body">
+    							<br/>   					
+								<table class="table table-responsive">
+									<thead>
+										<tr>
+											<th><i class="fa fa-calendar-o fa-1x " style="color:black" aria-hidden="true"></i> Day</th>
+											<th><i class="fa fa-clock-o fa-1x " style="color:green" aria-hidden="true"></i> Begin</th>
+											<th><i class="fa fa-clock-o fa-1x " style="color:red" aria-hidden="true"></i> End</th>
+										</tr>
+									</thead>
+										<tr>
+											<td>Monday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker1" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker1" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker2" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker2" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+										<tr>
+											<td>Tuesday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker3" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker3" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker4" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker4" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+										<tr>
+											<td>Wednesday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker5" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker5" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker6" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker6" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+											<tr>
+											<td>Thursday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker7" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker7" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker8" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker8" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+										<tr>
+											<td>Friday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker9" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker9" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker10" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker10" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+										<tr>
+											<td>Saturday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker11" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker11" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker12" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker12" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+											<tr>
+											<td>Sunday</td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker13" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker13" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker14" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker14" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+										</tr>
+								</table>
+  							</div>
+						</div>
   					</div>
   					<br/>
   					<button type="button" class="btn btn-primary btn-lg">Continue <i class="fa fa-arrow-right  fa-1x " style="color:white" aria-hidden="true"></i></button>
   					<br/>
+  					
 				</form>
 			</div>
 		</div>

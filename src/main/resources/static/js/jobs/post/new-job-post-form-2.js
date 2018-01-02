@@ -2,7 +2,7 @@
  * 
  */
 
-var app = angular.module('jobPostApp', []);
+var app = angular.module('jobPostApp', ['moment-picker']);
 
 app.controller('jobPostCtrl',['$scope','$http', function($scope,$http) {
 		
