@@ -27,7 +27,7 @@ h1,h2,h3,h4 {
 }
 
 /*
-* Image uplaod
+* Image uplaod boxes 
 */
 
 .image-upload {
@@ -46,6 +46,26 @@ h1,h2,h3,h4 {
     cursor: pointer;
 }
 
-.site-collapsable{
-	display: none;
+/**
+* Tables - Borderless table style
+*/
+.table-borderless td,
+		.table-borderless th {
+    	border: 0 !important;
+    
+}
+
+.dissappear {
+	display:none;
+}
+.reappear {
+	display:full;
+}
+
+.basic-textarea textarea {
+    height: auto;
+}
+
+.rounded-corners textarea {
+    border-radius: 0.25rem;
 }

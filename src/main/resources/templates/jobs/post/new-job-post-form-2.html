@@ -15,12 +15,12 @@
 					<br/><br/>
 					<div class="form-group">
 						<label class="site-font-small" for="exampleFormControlTextarea1">Add a Job headline</label><i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i>
-  						<input ng-model="email" type="email" class="form-control" placeholder="Web Developer specializing in Bootstrap based site designs" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
+  						<input ng-model="headline" type="email" class="form-control" placeholder="Web Developer specializing in Bootstrap based site designs" aria-label="Email" aria-describedby="sizing-addon1" autofocus="true"/>
 					</div>
 					<br/>
-					<div class="form-group">
+					<div class="form-group basic-textarea rounded-corners">
     					<label class="site-font-small" for="exampleFormControlTextarea1">Write a good Job description </label><i class="fa fa-asterisk" style="color:red" aria-hidden="true"></i>
-    					<textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+    					<textarea ng-model="description" class="form-control" id="exampleFormControlTextarea1" rows="7"></textarea>
   					</div>
   					<br/>
   					 <div class="form-group">
@@ -28,35 +28,59 @@
     					<div class="row justify-content-around">
     					   <div class="image-upload  col-3">
    						 		<label for="file-input-1">
-     					   			<img ng-src="{{images[0]}}" id="photo-id" class="img-thumbnail"/>    					   
+     					   			<img ng-src="{{images[0]}}" id="photo-id" class="img-thumbnail .z-depth-1"/>    					   
     							</label>
     							<input type="file" onchange="angular.element(this).scope().uploadFile(this,0)" class="form-control-file" id="file-input-1"/>
 							</div>
 							  <div class="image-upload col-3">
    						 		<label for="file-input-2">
-        							<img ng-src="{{images[1]}}" id="photo-id" class="img-thumbnail"/>    					   
+        							<img ng-src="{{images[1]}}" id="photo-id" class="img-thumbnail .z-depth-1"/>    					   
     							</label>
     							<input type="file" onchange="angular.element(this).scope().uploadFile(this,1)" class="form-control-file" id="file-input-2"/>
 							</div>
 							  <div class="image-upload col-3">
    						 		<label for="file-input-3">
-        							<img ng-src="{{images[2]}}" id="photo-id" class="img-thumbnail"/>    					   
+        							<img ng-src="{{images[2]}}" id="photo-id" class="img-thumbnail .z-depth-1"/>    					   
     							</label>
     							<input type="file" onchange="angular.element(this).scope().uploadFile(this,2)" class="form-control-file" id="file-input-3"/>
 							</div>
 							<div class="image-upload col-3">
    						 		<label for="file-input-4">
-        							<img ng-src="{{images[3]}}" id="photo-id" class="img-thumbnail"/>    					   
+        							<img ng-src="{{images[3]}}" id="photo-id" class="img-thumbnail .z-depth-1"/>    					   
     							</label>
     							<input type="file" onchange="angular.element(this).scope().uploadFile(this,3)" class="form-control-file" id="file-input-4"/>
 							</div>					
     					</div>
-    					<br/><br/>
-    					<div class="card text-center">
-    					 <div class="card-header">
-    							<h3 class="site-font-small">Choose your availability</h3>
+    					<br/>
+  						<div class="card">
+  						 	<div class="card-header primary-color white-text">
+    							<h3 class="site-font-small">Your Location</h3>
   							</div>
-  							<div class="card-body">
+    						<div class="card-body">
+    								<table class="table table-responsive table-borderless">
+    									<tr><td valign="bottom">Nearest Zipcode</td><td><input ng-model="zipcode" type="text"/></td></tr>
+    									<tr><td>Distance from Zipcode</td><td><select ng-model="select_distance" class="custom-select" id="inputGroupSelect04">
+    											<option value="1">5 miles</option>
+    											<option value="2">10 miles</option>
+    											<option value="3">15 miles</option>
+    											<option value="3">20 miles</option>
+    											<option value="3">30 miles</option>
+    											<option value="3">40 miles</option>
+    											<option value="3">50 miles</option>
+  											</select>
+  										</td>
+  										</tr>
+  										<tr><td>Willing to Travel</td>
+  										<td><div class="form-group"><input ng-model="" type="checkbox" id="checkbox11"/><label for="checkbox11"> Yes</label></div></td></tr>
+    								</table>
+    						</div>
+						</div>
+    					<br/>
+    					<div class="card">
+    					 <div class="card-header primary-color white-text">
+    							<h3 class="site-font-small"><a href="javascript:void(0)" ng-click="toggleAvailability()" ng-hide="availability == 'appear'"><i class="fa  fa-plus fa-1x " style="color:white" aria-hidden="true"></i></a><a href="javascript:void(0)" ng-click="toggleAvailability()" ng-hide="availability == 'dissappear'"><i class="fa  fa-minus fa-1x " style="color:white" aria-hidden="true"></i></a> Choose your availability </h3>
+  							</div>
+  							<div class="card-body" ng-class="availability">
     							<br/>   					
 								<table class="table table-responsive">
 									<thead>
@@ -67,52 +91,68 @@
 										</tr>
 									</thead>
 										<tr>
-											<td>Monday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker1" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker1" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker2" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker2" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Monday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker1" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker1" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker2" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker2" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 										<tr>
-											<td>Tuesday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker3" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker3" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker4" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker4" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Tuesday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker3" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker3" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker4" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker4" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 										<tr>
-											<td>Wednesday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker5" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker5" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker6" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker6" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Wednesday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker5" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker5" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker6" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker6" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 											<tr>
-											<td>Thursday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker7" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker7" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker8" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker8" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Thursday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker7" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker7" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker8" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker8" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 										<tr>
-											<td>Friday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker9" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker9" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker10" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker10" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Friday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker9" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control"  ng-model="ctrl.timepicker9" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker10" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker10" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 										<tr>
-											<td>Saturday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker11" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker11" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker12" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker12" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Saturday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker11" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker11" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker12" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker12" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 											<tr>
-											<td>Sunday</td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker13" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker13" ng-model-options="{ updateOn: 'blur' }"/></div></td>
-											<td><div class="input-group" moment-picker="ctrl.timepicker14" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" placeholder="Select a time" ng-model="ctrl.timepicker14" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><strong>Sunday</strong></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker13" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker13" ng-model-options="{ updateOn: 'blur' }"/></div></td>
+											<td><div class="input-group" moment-picker="ctrl.timepicker14" format="HH:mm"><span class="input-group-addon"><i class="octicon octicon-clock"></i></span><input class="form-control" ng-model="ctrl.timepicker14" ng-model-options="{ updateOn: 'blur' }"/></div></td>
 										</tr>
 								</table>
   							</div>
 						</div>
+						 <br/>
+  						<div class="card">
+  						 	<div class="card-header primary-color white-text">
+    							<h3 class="site-font-small"><a href="javascript:void(0)" ng-click="toggleDetails()" ng-hide="details == 'appear'"><i class="fa  fa-plus fa-1x " style="color:white" aria-hidden="true"></i></a> <a href="javascript:void(0)" ng-click="toggleDetails()" ng-hide="details == 'dissappear'"><i class="fa  fa-minus fa-1x " style="color:white" aria-hidden="true"></i></a> Add some details</h3>
+  							</div>
+    						<div class="card-body" ng-class="details">
+    								<table class="table table-responsive table-borderless">
+    									<tr><td><i class="fa fa-bar-chart fa-1x " style="color:black" aria-hidden="true"></i> Experience</td><td><span class="font-bold blue-text mr-2">1</span><input ng-model="experience" class="no-border" type="range" min="1" max="20" style=""/><span class="font-bold blue-text ml-2">20</span></td><td>{{experience}} Years</td></tr>
+    									<tr><td><i class="fa fa-dollar fa-1x " style="color:green" aria-hidden="true"></i> Payment</td>
+    									<td><div class="form-group"><input type="radio" id="checkbox11"/><label for="checkbox11">Yes</label></div><div class="form-group"><input type="radio" id="checkbox11"/><label for="checkbox11">Yes</label></div></td></tr>
+    									<tr><td><i class="fa fa-phone fa-1x " style="color:black" aria-hidden="true"></i> Phone</td><td><input ng-model="phone" type="text"/></td></tr>
+    									<tr><td><i class="fa fa-envelope fa-1x " style="color:black" aria-hidden="true"></i> Email</td><td><input ng-model="email" type="text"/></td></tr>
+    								</table>
+    						</div>
+						</div>
   					</div>
   					<br/>
-  					<button type="button" class="btn btn-primary btn-lg">Continue <i class="fa fa-arrow-right  fa-1x " style="color:white" aria-hidden="true"></i></button>
+  					<button type="button" class="btn btn-success btn-lg">Submit <i class="fa fa-check fa-1x fa-1x " style="color:white" aria-hidden="true"></i></button>
   					<br/>
   					
 				</form>
 			</div>
 		</div>
 	</div>
+<div th:replace="layout/site-footer"></div>
 <script src="/js/jobs/post/new-job-post-form-2.js"></script>
 </body>
 </html>

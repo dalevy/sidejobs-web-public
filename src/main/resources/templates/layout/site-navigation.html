@@ -6,9 +6,9 @@
 	<i class="fa fa-user fa-2x " style="color:white;" aria-hidden="true"></i>
     <a class="nav-link" href="/users/dashboard" th:text="${username}" th:case="true"></a>
     <a class="nav-link" href="/login" th:text="${username}" th:case="false"></a>
-    <a href="/home" class="btn btn-outline-light mr-sm-3" role="button">Home</a>
-    <a href="/messages" class="btn btn-outline-light mr-sm-3" role="button"> <i class="fa fa-comments-o fa-1x " style="color:white" aria-hidden="true"></i> Messages <span class="badge badge-light" th:text="${messages}"></span></a>
-    <a href="/jobs/post" class="btn btn-outline-light mr-sm-3" role="Post A Job" aria-lable="Forms"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Post A Job</a>
-    <a href="/help" class="btn btn-outline-light mr-sm-3" role="button" aria-lable="Help"><i class="fa fa-wpforms fa-1x " style="color:white" aria-hidden="true"></i> Help</a>
+    <a href="/home" class="btn btn-outline-primary waves-effect mr-sm-3" role="button">Home</a>
+    <a href="/messages" class="btn btn-outline-primary waves-effect mr-sm-3" role="button">Messages</a>
+    <a href="/jobs/post" class="btn btn-outline-primary waves-effect mr-sm-3" role="Post A Job" aria-lable="Forms">Post A Job</a>
+    <a href="/help" class="btn btn-outline-primary waves-effect mr-sm-3" role="button" aria-lable="Help">Help</a>
   </form>
 </nav>
